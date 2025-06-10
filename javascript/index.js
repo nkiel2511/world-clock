@@ -20,7 +20,7 @@ function updateTime() {
   SydneyTime.innerHTML = SydneyCurrent.format("h:MM:ss[<small>] A[</small>]");
 }
 updateTime();
-setInterval(updateTime, 1000);
+let cityInterval = setInterval(updateTime, 1000);
 
 function updateCity(event) {
   let cityTimeZone = event.target.value;
@@ -29,6 +29,13 @@ function updateCity(event) {
     cityTimeZone = moment.tz.guess();
   }
 
+  updateCityDisplay(cityTimeZone);
+  clearInterval(cityInterval);
+  cityInterval = setInterval(() => {
+    updateCityDisplay(cityTimeZone);
+  }, 1000);
+}
+function updateCityDisplay(cityTimeZone) {
   let cityCurrent = moment().tz(cityTimeZone);
 
   let cityName = cityTimeZone.replace("_", " ").split("/")[1];
